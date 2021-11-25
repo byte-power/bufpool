@@ -2,6 +2,7 @@ package bufpool
 
 import (
 	"log"
+	"math/bits"
 	"sync"
 )
 
@@ -41,8 +42,11 @@ func (p *bufPool) Get(length int) *Buffer {
 		buf.buf = buf.buf[:length]
 		return buf
 	}
-
-	b := make([]byte, length, indexSize(idx))
+	cap := indexSize(idx)
+	if cap < length {
+		cap = 1 << bits.Len32(uint32(length))
+	}
+	b := make([]byte, length, cap)
 	return NewBuffer(b)
 }
 
