@@ -146,3 +146,10 @@ func prevIndex(n int) int {
 func indexSize(idx int) int {
 	return minSize << uint(idx)
 }
+
+func calculateBufferCap(length int) int {
+	if length <= minSize {
+		return minSize
+	}
+	return 1 << bits.Len32(uint32(length-1))
+}

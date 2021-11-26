@@ -19,6 +19,16 @@ func TestGetZero(t *testing.T) {
 	require.Equal(t, buf.Cap(), 64)
 }
 
+func TestGetOver32MB(t *testing.T) {
+	// more than 32MB
+	size := 1<<25 + 2
+	// 64MB
+	cap := 1 << 26
+	buf := bufpool.Get(size)
+	require.Equal(t, size, buf.Len())
+	require.Equal(t, cap, buf.Cap())
+}
+
 func TestUseAfterPut(t *testing.T) {
 	buf := bufpool.Get(10)
 	bufpool.Put(buf)
