@@ -42,7 +42,7 @@ func (p *bufPool) Get(length int) *Buffer {
 		return buf
 	}
 
-	b := make([]byte, length, indexSize(idx))
+	b := make([]byte, length, calculateBufferCap(length))
 	return NewBuffer(b)
 }
 
